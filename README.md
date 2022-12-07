@@ -70,31 +70,31 @@
 
 ### Algunos Ejemplos de Codigos en Funcionamiento  
 <div align="center">
-<img src="https://cdn.discordapp.com/attachments/1027458270589362257/1033606374443196456/unknown.png" align="center" height="" width="" />
+<img src="https://cdn.discordapp.com/attachments/1027458270589362257/1033606374443196456/unknown.png" height="" width="" />
 </div>  
   
 
 
 
 ### Sistema de Warns Multi Servidor  
-<div align="center">
-<img src="https://cdn.discordapp.com/attachments/1027458270589362257/1032717486480707685/unknown.png" align="center" height="" width="" />
+<div>
+<img src="https://cdn.discordapp.com/attachments/1027458270589362257/1032717486480707685/unknown.png" height="" width="" />
 </div>  
   
 
 
 
 ### Sistema de Notas Multi Usuarios  
-<div align="center">
-<img src="https://cdn.discordapp.com/attachments/1027458270589362257/1032519171638050906/unknown.png" align="center" height="" width="" />
+<div>
+<img src="https://cdn.discordapp.com/attachments/1027458270589362257/1032519171638050906/unknown.png" height="" width="" />
 </div>  
   
 
 
 
 ### Sistema de Guias y Eventos Autoconfigurables  
-<div align="center">
-<img src="https://cdn.discordapp.com/attachments/1027458270589362257/1032708321146314773/unknown.png" align="center" height="" width="" />
+<div>
+<img src="https://cdn.discordapp.com/attachments/1027458270589362257/1032708321146314773/unknown.png" height="" width="" />
 </div>  
   
 
