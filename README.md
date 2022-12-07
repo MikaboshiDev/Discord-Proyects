@@ -36,40 +36,15 @@
 
 </td><td valign="top" width="33%">
 
-
-
-### Backend  
-<div align="center">  
-<a href="https://www.mongodb.com/" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/mongodb-original-wordmark.svg" alt="MongoDB" height="50" /></a>  
-<a href="https://expressjs.com/" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/express-original-wordmark.svg" alt="Express.js" height="50" /></a>  
-<a href="https://nodejs.org/" target="_blank"><img style="margin: 10px" src="https://profilinator.rishav.dev/skills-assets/nodejs-original-wordmark.svg" alt="Node.js" height="50" /></a>  
-</div>
-
 </td><td valign="top" width="33%">
-
-
-
-### DevOps  
-<div align="center">  
-  
-</div>
 
 </td></tr></table>  
 
 <br/>  
-
-
-## Connect with me  
-<div align="center">
-  
-</div>  
-  
-
 <br/>     
 
-
 ### Algunos Ejemplos de Codigos en Funcionamiento  
-<div align="center">
+<div>
 <img src="https://cdn.discordapp.com/attachments/1027458270589362257/1033606374443196456/unknown.png" height="" width="" />
 </div>  
   
