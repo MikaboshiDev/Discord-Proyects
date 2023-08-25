@@ -1,68 +1,58 @@
-const moment = require('moment');
-const osu = require('node-os-utils');
-const os = require('os');
-const mongoose = require('mongoose');
 const version = require('../../package.json');
 const { readdirSync } = require('fs');
-const query = require('samp-query');
-const { table } = require('console');
-require('moment-duration-format');
+const Discord = require('discord.js');
+const { connection } = require("mongoose");
+const os = require("os");
 const chalk = require("chalk");
-
 module.exports = {
     name: "ready",
-    once: true,
-    /**
-     * 
-     * @param { Client } client 
-     */
-     async execute (client) {
-let cpuUsado;
-const cpu = osu.cpu
-var mem = osu.mem;
-let freeRAM, usedRAM;
+    async execute(client) {
+        const edit_msg_config = {
+            channel_id: "",
+            message_id: "",
+        }
 
-await mem.info().then(info => {
-  freeRAM = info['freeMemMb']
-  usedRAM = info['totalMemMb'] - freeRAM
-});
+        var CronJob = require('cron').CronJob;
+        var job = new CronJob('0 */1 * * *', function () {
+            edit_msg(client) 
+        }, null, true, 'Europe/Berlin');
+        job.start();
 
-let values = {
-  high: 200,
-  medium: 100,
-  low: 50
-}
-let ping = client.ws.ping
-let status;
-if(ping > values.high){ status = 'Inestable' }
-else if (ping > values.medium){ status = 'Estable' }
-else { status = 'Excelente' }
+        async function edit_msg(client) {
+            let channel = await client.channels.fetch(edit_msg_config.channel_id); 
+            let message = await channel.messages.fetch(edit_msg_config.message_id); 
+            const startUsage = process.cpuUsage();
+            const now = Date.now();
+            while (Date.now() - now < 500);
+            let userUsage = process.cpuUsage(startUsage).user / 1000;
+            let sysUsage = process.cpuUsage(startUsage).system / 1000 || 0;
 
-try {
-        const stringlength = 69;
-        console.log("\n")
-        console.log(`     ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓`.chalk.brightGreen)
-        console.log(`     ┃ `.chalk.brightGreen + " ".repeat(-1+stringlength-` ┃ `.length)+ "┃".chalk.brightGreen)
-        console.log(`     ┃ `.chalk.brightGreen + `Discord Bot is online!`.bold.brightGreen + " ".repeat(-1+stringlength-` ┃ `.length-`Discord Bot is online!`.length)+ "┃".chalk.brightGreen)
-        console.log(`     ┃ `.chalk.brightGreen + ` /--/ ${client.user.tag} /--/ `.chalk.brightGreen+ " ".repeat(-1+stringlength-` ┃ `.length-` /--/ ${client.user.tag} /--/ `.length)+ "┃".chalk.brightGreen)
-        console.log(`     ┃ `.chalk.brightGreen + " ".repeat(-1+stringlength-` ┃ `.length)+ "┃".chalk.brightGreen)
-        console.log(`     ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛`.chalk.brightGreen)
-} catch {
-console.table({
-  "Ram" : `${(usedRAM, freeRAM)} [${Math.round((100 * usedRAM / (usedRAM + freeRAM)))}%]`,
-  "Consume Diario" : `${(os.totalmem() / 1024 / 1024 / 1024).toFixed(2)} GB`,
-  "System" : `${os.type} ${os.release} ${os.arch}`,
-  "JavaScript" : `${process.version}`,
-  "Bot Uptime" : `${moment.duration(client.uptime).format(`D [Días], H [Horas], m [Minutos], s [Segundos]`)}`,
-  "Api Discord Timings" : `${status} | ${ping}ms`,
-  "Fecha de Registro" : `${moment().format('MMMM Do YYYY, h:mm:ss a')}`,
-  "Servidores Presentes" : `${client.guilds.cache.size} Servidores`,
-  "Nucleos" : `${os.cpus().length} Nucleos Activos`,
-  "Zona Horaria" : `${moment().format('Z')}`,
-  "Sistema Operativo" : `${os.platform} Hosting Ptero`,
-  "Version" : `${version.version} Controler`,
-  "Node" : `${process.version} Node JS Version`,
-  "MongoDB" : `${mongoose.version} Mongoose DB`,
-  "Discord.js" : `${version.dependencies['discord.js']} Discord.js`})}
-   }
-}
+            const embed = new Discord.EmbedBuilder()
+                .setAuthor({ name: `${client.user.tag}'s Information`, iconURL: `https://cdn.discordapp.com/attachments/992251291214545026/998974029614567515/d9cb1a809bcc4b1b915f40c784e9b365.png` })
+                .setDescription(`**Prefix:** \`/\``)
+                .setThumbnail(`https://cdn.discordapp.com/attachments/992251291214545026/998974029614567515/d9cb1a809bcc4b1b915f40c784e9b365.png`)
+                .setColor('Random')
+                .setTimestamp()
+                .addFields(
+                    { name: `\`•\` Total Server(s): [${client.guilds.cache.size}]`, value: `\`\`\`yml\nNames: ${client.user.tag}\`\`\``, inline: true },
+                    { name: `\`•\` Version:`, value: `\`\`\`yml\n${version.version}\`\`\``, inline: true },
+                    { name: `\`•\` Node Version:`, value: `\`\`\`yml\n${process.version}\`\`\``, inline: true },
+                    { name: `\`•\` Total User(s): [${client.users.cache.size}]`, value: `\`\`\`yml\n${client.users.cache.size}\`\`\``, inline: true },
+                    { name: `\`•\` Total Channel(s): [${client.channels.cache.size}]`, value: `\`\`\`yml\n${client.channels.cache.size}\`\`\``, inline: true },
+                    { name: `\`•\` Total Command(s): [${client.commands.size}]`, value: `\`\`\`yml\n${client.commands.size}\`\`\``, inline: true },
+                    { name: `\`•\` Total Category(s): [${readdirSync('./Commands/').length}]`, value: `\`\`\`yml\n${readdirSync('./Commands/').length}\`\`\``, inline: true },
+                    { name: `\`•\` Total Role(s): [${client.guilds.cache.reduce((a, g) => a + g.roles.cache.size, 0)}]`, value: `\`\`\`yml\n${client.guilds.cache.reduce((a, g) => a + g.roles.cache.size, 0)}\`\`\``, inline: true },
+                    { name: `\`•\` Total Bot(s): [${client.guilds.cache.reduce((a, g) => a + g.members.cache.filter(m => m.user.bot).size, 0)}]`, value: `\`\`\`yml\n${client.guilds.cache.reduce((a, g) => a + g.members.cache.filter(m => m.user.bot).size, 0)}\`\`\``, inline: true },
+                    { name: `\`•\` Total Member(s): [${client.guilds.cache.reduce((a, g) => a + g.memberCount, 0)}]`, value: `\`\`\`yml\n${client.guilds.cache.reduce((a, g) => a + g.memberCount, 0)}\`\`\``, inline: true },
+                    { name: `\`•\` Total Human(s): [${client.guilds.cache.reduce((a, g) => a + g.members.cache.filter(m => !m.user.bot).size, 0)}]`, value: `\`\`\`yml\n${client.guilds.cache.reduce((a, g) => a + g.members.cache.filter(m => !m.user.bot).size, 0)}\`\`\``, inline: true },
+                    { name: `\`•\` Platform`, value: `\`\`\`yml\n${process.platform}\`\`\`` },
+                    { name: `\`•\` CPU Usage:`, value: `\`\`\`yml\nUser: ${userUsage} MB\nSystem: ${sysUsage} MB\`\`\`` }
+                );
+
+            message.edit({
+                embeds: [embed]
+            }) 
+            console.log(chalk.cyanBright("[ Estatus - Bots ]") + ` Your New Message Created at: ${String(new Date).split(" ", 5).join(" ")}`)
+        }
+    },
+};
